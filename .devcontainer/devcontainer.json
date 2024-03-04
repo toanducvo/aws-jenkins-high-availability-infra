@@ -1,0 +1,65 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+  // https://github.com/devcontainers/spec/blob/main/schemas/devContainer.base.schema.json
+  "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.base.schema.json",
+
+  "name": "Debian",
+
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "image": "mcr.microsoft.com/devcontainers/base:debian",
+
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  "features": {
+    "ghcr.io/devcontainers/features/aws-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers-contrib/features/groovy-sdkman:2": {}
+  },
+
+  // "forwardPorts": [],
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "bash ./.devcontainer/post-install.sh",
+
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // AWS Toolkit
+        "amazonwebservices.aws-toolkit-vscode",
+
+        // Terraform
+        "hashicorp.terraform",
+
+        // Material Icon Theme
+        "PKief.material-icon-theme",
+
+        // Prettier - Code formatter
+        "esbenp.prettier-vscode",
+
+        // Markdownlint
+        "DavidAnson.vscode-markdownlint",
+
+        // Github Copilot
+        "GitHub.copilot",
+
+        // Docker
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "workbench.iconTheme": "material-icon-theme",
+        "workbench.colorTheme": "Default Dark Modern",
+        "editor.mouseWheelZoom": true,
+        "editor.fontFamily": "SFMono-Medium, monospace",
+        "editor.fontSize": 14,
+        "files.autoSave": "afterDelay",
+        "files.autoSaveDelay": 1000,
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.cursorStyle": "line",
+        "git.autofetch": true
+      }
+    }
+  }
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
+}
