@@ -13,7 +13,10 @@
   "features": {
     "ghcr.io/devcontainers/features/aws-cli:1": {},
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    "ghcr.io/devcontainers-contrib/features/groovy-sdkman:2": {}
+    "ghcr.io/devcontainers-contrib/features/groovy-sdkman:2": {},
+    "ghcr.io/devcontainers/features/python:1": {},
+    "ghcr.io/devcontainers-contrib/features/packer-asdf:2": {},
+    "ghcr.io/devcontainers-contrib/features/ansible:2": {}
   },
 
   // "forwardPorts": [],
