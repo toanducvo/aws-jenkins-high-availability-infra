@@ -5,7 +5,11 @@ variable "aws_region" {
 }
 
 
-
+variable "azs" {
+  type = list(string)
+  description = "Availability zones"
+  default = ["ap-southeast-1a", "ap-southeast-1b", "ap-southeast-1c"]
+}
 
 ### VPC
 

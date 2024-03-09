@@ -45,11 +45,11 @@ resource "aws_autoscaling_group" "jenkins_asg" {
     value               = "Jenkins"
   }
 
-  availability_zones = ["ap-southeast-1a", "ap-southeast-1b", "ap-southeast-1c"]
+  availability_zones = var.azs
 
   target_group_arns = [aws_lb_target_group.jenkins_alb_target_group.arn]
 
-  vpc_zone_identifier = [for value in aws_subnet.jenkins_public_subnets : value.id]
+  vpc_zone_identifier = [for value in aws_subnet.jenkins_private_subnets : value.id]
 
   launch_template {
     id      = aws_launch_template.jenkins_launch_template.id
