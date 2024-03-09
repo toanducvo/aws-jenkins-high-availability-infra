@@ -1,64 +1,64 @@
-# Application Load Balancer for Jenkins
-# This helps to distribute traffic across the Jenkins EC2 instances
-# if there are multiple instances provisioned by the Auto Scaling Group
-resource "aws_lb" "jenkins_lb" {
-  name               = var.app_alb
-  internal           = false
-  load_balancer_type = var.load_balancer_type
-  security_groups    = [aws_security_group.jenkins_security_group.id]
-  subnets            = [for value in aws_subnet.jenkins_public_subnets : value.id]
+locals {
+  jenkins_alb_ingress_rules = [
+    {
+      port        = 443
+      description = "Allow HTTPS traffic"
+      protocol    = "HTTPS"
+  }]
 
-  tags = {
-    Name = "Jenkins-ALB"
-  }
+  jenkins_alb_egress_rules = [{
+    port        = 0
+    description = "Allow all Egress traffic"
+  }]
 }
 
 
-# Target Group for Jenkins Application Load Balancer
-# When the ALB receives a request, it forwards the request to the target group
+resource "aws_lb" "jenkins_lb" {
+  name               = var.app_alb
+  internal           = var.alb_internal
+  load_balancer_type = var.load_balancer_type
+  security_groups    = [aws_security_group.jenkins_alb_security_group.id]
+  subnets            = [for value in aws_subnet.jenkins_public_subnets : value.id]
+}
+
 resource "aws_lb_target_group" "jenkins_alb_target_group" {
   vpc_id = aws_vpc.jenkins_vpc.id
 
-  port     = 8080
-  protocol = "HTTP"
+  port     = local.jenkins_launch_template_ingress_rules[0].port
+  protocol = local.jenkins_launch_template_ingress_rules[0].protocol
 
   health_check {
-    protocol = "HTTP"
-    port     = 8080
+    protocol = local.jenkins_launch_template_ingress_rules[0].protocol
+    port     = local.jenkins_launch_template_ingress_rules[0].port
   }
 
   tags = {
-    Name = "Jenkins-ALB-Target-Group"
+    Name = var.load_balancer_target_group_name
   }
 }
 
-# Listener for Jenkins Application Load Balancer
-# This will listen on specific port and forward the request to the target group
 resource "aws_lb_listener" "jenkins_alb_listener" {
   load_balancer_arn = aws_lb.jenkins_lb.arn
-  port              = [443]
-  protocol          = ["HTTPS"]
+  port              = local.jenkins_alb_ingress_rules[0].port
+  protocol          = local.jenkins_alb_ingress_rules[0].protocol
 
   default_action {
-    type             = "forward"
+    type             = var.load_balancer_listener_default_action_type
     target_group_arn = aws_lb_target_group.jenkins_alb_target_group.arn
   }
 
   tags = {
-    Name = "Jenkins-ALB-Listener"
+    Name = var.load_balancer_listener_name
   }
 }
 
-# Security Group for Jenkins Application Load Balancer
-# This will allow traffic from the internet to the ALB
 resource "aws_security_group" "jenkins_alb_security_group" {
   name        = "Jenkins-ALB-Security-Group"
   description = "Security Group for Jenkins Application Load Balancer"
   vpc_id      = aws_vpc.jenkins_vpc.id
 
-  # Allow traffic from the internet to the ALB
   dynamic "ingress" {
-    for_each = local.ingress_rules
+    for_each = local.jenkins_alb_ingress_rules
 
     content {
       description = ingress.value.description
@@ -69,9 +69,8 @@ resource "aws_security_group" "jenkins_alb_security_group" {
     }
   }
 
-  # Allow all egress traffic
   dynamic "egress" {
-    for_each = local.egress_rules
+    for_each = local.jenkins_alb_egress_rules
 
     content {
       description = egress.value.description
@@ -80,9 +79,5 @@ resource "aws_security_group" "jenkins_alb_security_group" {
       protocol    = "-1"
       cidr_blocks = [var.cidr_block]
     }
-  }
-
-  tags = {
-    Name = "Jenkins-ALB-Security-Group"
   }
 }
