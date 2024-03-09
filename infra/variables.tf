@@ -5,6 +5,10 @@ variable "aws_region" {
 }
 
 
+
+
+### Availability Zones
+
 variable "azs" {
   type = list(string)
   description = "Availability zones"
@@ -236,6 +240,8 @@ variable "jenkins_launch_template_security_group_description" {
   type        = string
   default     = "Security Group for Jenkins EC2 Instance"
 }
+
+
 
 
 ### SSM Parameter Variables
