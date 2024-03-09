@@ -83,7 +83,7 @@ resource "aws_autoscaling_schedule" "jenkins-server-asg-offline-weekday" {
   time_zone = var.jenkins_schedule_time_zone
 }
 
-resource "aws_security_group" "jenkins_security_group" {
+resource "aws_security_group" "jenkins_launch_template_security_group" {
   vpc_id = aws_vpc.jenkins_vpc.id
 
   name        = var.jenkins_launch_template_security_group_name

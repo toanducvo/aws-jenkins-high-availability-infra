@@ -32,7 +32,7 @@ resource "aws_security_group" "jenkins_efs_security_group" {
       to_port         = ingress.value.port
       protocol        = ingress.value.protocol
       description     = ingress.value.description
-      security_groups = [aws_security_group.jenkins_security_group.id]
+      security_groups = [aws_security_group.jenkins_launch_template_security_group.id]
     }
   }
 

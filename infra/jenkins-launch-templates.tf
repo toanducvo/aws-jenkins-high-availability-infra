@@ -6,7 +6,7 @@ resource "aws_launch_template" "jenkins_launch_template" {
 
 
 
-  vpc_security_group_ids = [aws_security_group.jenkins_security_group.id]
+  vpc_security_group_ids = [aws_security_group.jenkins_launch_template_security_group.id]
 
   key_name  = var.jenkins_key_pair_name
   user_data = data.template_file.jenkins_setup_user_data.rendered
