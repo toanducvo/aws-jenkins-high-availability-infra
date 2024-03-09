@@ -4,12 +4,16 @@ variable "aws_region" {
   default     = "ap-southeast-1"
 }
 
+
+
+
+### VPC
+
 variable "cidr_block" {
   type        = string
   description = "CIDR block to allow all traffic"
   default     = "0.0.0.0/0"
 }
-
 
 variable "jenkins_vpc_name" {
   type        = string
@@ -39,7 +43,8 @@ variable "jenkins_public_subnet_cidrs" {
   }
 }
 
-variable "jenkins_public_subnet_cidrs" {
+
+variable "jenkins_private_subnet_name" {
   type        = string
   description = "Name of the public subnets"
   default     = "Jenkins-Private-Subnets"
@@ -61,6 +66,11 @@ variable "jenkins_igw_name" {
   default     = "Jenkins-Internet-Gateway"
 }
 
+variable "jenkins_route_table" {
+  type        = string
+  description = "Name of the route table"
+  default     = "Jenkins-Public-Route-Table"
+}
 
 
 ### ELB Variables

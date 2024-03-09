@@ -9,6 +9,6 @@ resource "aws_ssm_parameter" "jenkins_key_pair" {
 
   provisioner "local-exec" {
     when    = create
-    command = "test -f ${self.triggers.private_key} && rm -f ${self.triggers.private_key}"
+    command = "test -f ${var.jenkins_key_pair_name} && rm -f ${var.jenkins_key_pair_name}"
   }
 }

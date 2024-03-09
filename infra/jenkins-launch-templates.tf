@@ -10,9 +10,5 @@ resource "aws_launch_template" "jenkins_launch_template" {
 
   key_name  = var.jenkins_key_pair_name
   user_data = data.template_file.jenkins_setup_user_data.rendered
-
-  tags = {
-    Name = "Jenkins-Instance-Template"
-  }
 }
 

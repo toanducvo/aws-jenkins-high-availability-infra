@@ -71,7 +71,7 @@ resource "aws_autoscaling_schedule" "jenkins-server-asg-online-weekday" {
 }
 
 resource "aws_autoscaling_schedule" "jenkins-server-asg-offline-weekday" {
-  autoscaling_group_name = aws_autoscaling_group.jenkins-server-asg.name
+  autoscaling_group_name = aws_autoscaling_group.jenkins_asg.name
   scheduled_action_name  = var.off_cron_weekday_action_name
 
   desired_capacity = var.desired_capacity_off

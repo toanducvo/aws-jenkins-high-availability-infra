@@ -10,21 +10,21 @@ resource "aws_subnet" "jenkins_public_subnets" {
   for_each                = var.jenkins_public_subnet_cidrs
   availability_zone       = each.key
   cidr_block              = each.value
-  map_public_ip_on_launch = "true"
+  map_public_ip_on_launch = true
 
   tags = {
-    Name = var.jenkins_vpc_cidr
+    Name = var.jenkins_public_subnet_name
   }
 }
 
-resource "aws_subnet" "private_subnet" {
-  vpc_id            = aws_vpc.jenkins_vpc.id
-  for_each          = var.jenkins_private_subnet_cidrs
-  availability_zone = each.key
-  cidr_block        = each.value
-
+resource "aws_subnet" "jenkins_private_subnets" {
+  vpc_id                  = aws_vpc.jenkins_vpc.id
+  for_each                = var.jenkins_private_subnet_cidrs
+  availability_zone       = each.key
+  cidr_block              = each.value
+  map_public_ip_on_launch = false
   tags = {
-    Name = var.jenkins_public_subnet_cidrs
+    Name = var.jenkins_private_subnet_name
   }
 }
 
@@ -36,7 +36,7 @@ resource "aws_internet_gateway" "jenkins_igw" {
   }
 }
 
-resource "aws_route_table" "jenkins_route_table" {
+resource "aws_route_table" "jenkins_public_route_table" {
   vpc_id   = aws_vpc.jenkins_vpc.id
   for_each = aws_subnet.jenkins_public_subnets
 
@@ -46,13 +46,13 @@ resource "aws_route_table" "jenkins_route_table" {
   }
 
   tags = {
-    Name = "Jenkins-Public-Route-Table"
+    Name = var.jenkins_route_table
   }
 }
 
 resource "aws_route_table_association" "jenkins_route_table_association" {
   subnet_id      = aws_subnet.jenkins_public_subnets[each.key].id
   for_each       = var.jenkins_public_subnet_cidrs
-  route_table_id = aws_route_table.jenkins_route_table[each.key].id
+  route_table_id = aws_route_table.jenkins_public_route_table[each.key].id
 }
 

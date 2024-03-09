@@ -50,7 +50,7 @@ resource "aws_security_group" "jenkins_efs_security_group" {
 
 
 resource "aws_efs_mount_target" "jenkins_efs_mount" {
-  file_system_id  = aws_efs_file_system.jenkins-efs.id
+  file_system_id  = aws_efs_file_system.jenkins_efs.id
   for_each        = var.jenkins_public_subnet_cidrs
   subnet_id       = aws_subnet.jenkins_public_subnets[each.key].id
   security_groups = [aws_security_group.jenkins_efs_security_group.id]

@@ -4,6 +4,10 @@ locals {
       port        = 443
       description = "Allow HTTPS traffic"
       protocol    = "HTTPS"
+      }, {
+      port        = 80
+      description = "Allow HTTP traffic"
+      protocol    = "HTTP"
   }]
 
   jenkins_alb_egress_rules = [{
@@ -28,8 +32,8 @@ resource "aws_lb_target_group" "jenkins_alb_target_group" {
   protocol = local.jenkins_launch_template_ingress_rules[0].protocol
 
   health_check {
-    protocol = local.jenkins_launch_template_ingress_rules[0].protocol
     port     = local.jenkins_launch_template_ingress_rules[0].port
+    protocol = local.jenkins_launch_template_ingress_rules[0].protocol
   }
 
   tags = {
@@ -39,8 +43,8 @@ resource "aws_lb_target_group" "jenkins_alb_target_group" {
 
 resource "aws_lb_listener" "jenkins_alb_listener" {
   load_balancer_arn = aws_lb.jenkins_lb.arn
-  port              = local.jenkins_alb_ingress_rules[0].port
-  protocol          = local.jenkins_alb_ingress_rules[0].protocol
+  port              = local.jenkins_alb_ingress_rules[1].port
+  protocol          = local.jenkins_alb_ingress_rules[1].protocol
 
   default_action {
     type             = var.load_balancer_listener_default_action_type
