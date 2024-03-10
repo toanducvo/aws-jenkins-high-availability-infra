@@ -11,7 +11,7 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
-
+    working-directory: infra
     steps:
       - uses: actions/checkout@v3
 
