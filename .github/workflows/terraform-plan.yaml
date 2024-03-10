@@ -31,7 +31,9 @@ jobs:
         run: terraform init
 
       - name: Format
-        run: terraform fmt -check
+        with:
+          command: if [ -n "$(terraform fmt -check -recursive)" ]; then echo "Terraform files must be formatted. Please run terraform fmt to fix the formatting issues and commit the changes."; exit 1; fi
+
 
       - name: Validate
         run: terraform validate
