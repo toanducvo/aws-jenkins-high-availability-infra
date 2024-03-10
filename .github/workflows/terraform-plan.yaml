@@ -8,6 +8,10 @@ on:
     path:
       - "infra/*"
 
+  pull_request:
+    paths:
+      - "infra/*"
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
