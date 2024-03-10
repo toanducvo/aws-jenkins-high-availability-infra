@@ -1,0 +1,34 @@
+name: Terraform Apply
+
+on:
+  push:
+    branches:
+      - "**"
+      - "!main"
+  path:
+    - "infra/*"
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.7.4
+          terraform_wrapper: false # Optional: Skip the wrapper script
+
+      - name: Initialize
+        run: terraform init
+
+      - name: Format
+        run: terraform fmt -check
+
+      - name: Validate
+        run: terraform validate
+
+      - name: Plan
+        run: terraform plan
