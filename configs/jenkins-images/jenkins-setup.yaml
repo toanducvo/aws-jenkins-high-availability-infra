@@ -1,0 +1,56 @@
+---
+- hosts: localhost
+  connection: local
+  become: yes
+
+  tasks:
+    - name: Install wget
+      dnf:
+        name: wget
+        state: present
+
+    - name: Install Git
+      dnf:
+        name: git
+        state: present
+
+    - name: Install Java
+      dnf:
+        name: java-17-amazon-corretto
+        state: present
+
+    - name: Install EFS
+      dnf:
+        name: amazon-efs-utils
+        state: present
+
+    - name: Install AWS CLI
+      dnf:
+        name: awscli
+        state: present
+
+    - name: Add Jenkins repository
+      command: wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+      args:
+        creates: /etc/yum.repos.d/jenkins.repo
+
+    - name: Add Jenkins repository key
+      command: rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+      args:
+        creates: /etc/pki/rpm-gpg/RPM-GPG-KEY-jenkins
+
+    - name: Install Jenkins
+      dnf:
+        name: jenkins
+        state: present
+
+    - name: Upgrade all packages
+      dnf:
+        name: '*'
+        state: latest
+
+    - name: Start and enable Jenkins service
+      service:
+        name: jenkins
+        state: started
+        enabled: true
