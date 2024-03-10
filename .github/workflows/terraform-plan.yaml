@@ -5,8 +5,8 @@ on:
     branches:
       - "**"
       - "!main"
-  path:
-    - "infra/*"
+    path:
+      - "infra/*"
 
 jobs:
   terraform:
