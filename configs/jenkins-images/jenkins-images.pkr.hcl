@@ -36,13 +36,13 @@ build {
 
   provisioner "shell" {
     inline = [
-      "sudo dnf update -y",
-      "sudo dnf install python3 python3-pip -y"
+      "sudo dnf update -y"
     ]
   }
 
   provisioner "shell" {
   inline = [
+     "sudo dnf install python3 python3-pip -y",
      "sudo dnf install wget -y",
      "sudo dnf install git -y",
     ]
