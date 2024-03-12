@@ -4,53 +4,57 @@
   become: yes
 
   tasks:
-    - name: Install wget
-      dnf:
-        name: wget
-        state: present
-
-    - name: Install Git
-      dnf:
-        name: git
-        state: present
-
-    - name: Install Java
-      dnf:
-        name: java-17-amazon-corretto
-        state: present
-
-    - name: Install EFS
+    - name: install efs mount helper
       dnf:
         name: amazon-efs-utils
         state: present
 
-    - name: Install AWS CLI
+    - name: install aws cli
       dnf:
         name: awscli
         state: present
 
-    - name: Add Jenkins repository
+    - name: install java 17
+      dnf:
+        name: java-17-amazon-corretto
+        state: present
+
+    - name: add jenkins repository
       command: wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
       args:
         creates: /etc/yum.repos.d/jenkins.repo
 
-    - name: Add Jenkins repository key
+    - name: import jenkins repository key
       command: rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
       args:
         creates: /etc/pki/rpm-gpg/RPM-GPG-KEY-jenkins
 
-    - name: Install Jenkins
+    - name: install jenkins
       dnf:
         name: jenkins
         state: present
 
-    - name: Upgrade all packages
+    - name: upgrade all packages
       dnf:
-        name: '*'
+        name: "*"
         state: latest
 
-    - name: Start and enable Jenkins service
-      service:
+    - name: enable Jenkins service
+      systemd:
+        name: jenkins
+        state: enabled
+        enabled: yes
+
+    - name: start Jenkins service
+      systemd:
         name: jenkins
         state: started
-        enabled: true
+        enabled: yes
+
+    - name: just force systemd to reread configs (2.4 and above)
+      systemd:
+        daemon_reload: yes
+
+    - name: just force systemd to re-execute itself (2.8 and above)
+      systemd:
+        daemon_reexec: yes
