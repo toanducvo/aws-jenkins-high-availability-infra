@@ -42,14 +42,12 @@
     - name: enable Jenkins service
       systemd:
         name: jenkins
-        state: enabled
         enabled: yes
 
     - name: start Jenkins service
       systemd:
         name: jenkins
         state: started
-        enabled: yes
 
     - name: just force systemd to reread configs (2.4 and above)
       systemd:
