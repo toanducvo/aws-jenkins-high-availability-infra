@@ -4,19 +4,24 @@
   become: yes
 
   tasks:
-    - name: install efs mount helper
-      dnf:
-        name: amazon-efs-utils
-        state: present
-
     - name: install aws cli
       dnf:
         name: awscli
         state: present
 
+    - name: install efs mount helper
+      dnf:
+        name: amazon-efs-utils
+        state: present
+
     - name: install java 17
       dnf:
         name: java-17-amazon-corretto
+        state: present
+
+    - name: install java 17 development kit
+      dnf:
+        name: java-17-amazon-corretto-devel
         state: present
 
     - name: add jenkins repository
@@ -43,16 +48,3 @@
       systemd:
         name: jenkins
         enabled: yes
-
-    - name: start Jenkins service
-      systemd:
-        name: jenkins
-        state: started
-
-    - name: just force systemd to reread configs (2.4 and above)
-      systemd:
-        daemon_reload: yes
-
-    - name: just force systemd to re-execute itself (2.8 and above)
-      systemd:
-        daemon_reexec: yes

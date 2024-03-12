@@ -36,6 +36,7 @@ build {
 
   provisioner "shell" {
     inline = [
+      "sleep 30",
       "sudo dnf update -y"
     ]
   }
