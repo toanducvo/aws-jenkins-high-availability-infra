@@ -1,12 +1,12 @@
 packer {
   required_plugins {
     amazon = {
-      version = ">= 1.2.8"
+      version = ">= 1.3.1"
       source  = "github.com/hashicorp/amazon"
     }
 
      ansible = {
-      version = "~> 1"
+      version = ">= 1.1.1"
       source = "github.com/hashicorp/ansible"
     }
   }
@@ -38,6 +38,13 @@ build {
     inline = [
       "sudo dnf update -y",
       "sudo dnf install python3 python3-pip -y"
+    ]
+  }
+
+  provisioner "shell" {
+  inline = [
+     "sudo dnf install wget -y",
+     "sudo dnf install git -y",
     ]
   }
 
