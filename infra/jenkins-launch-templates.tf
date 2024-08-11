@@ -30,4 +30,6 @@ resource "aws_launch_template" "jenkins_launch_template" {
 
   key_name  = var.jenkins_key_pair_name
   user_data = base64encode(data.template_file.jenkins_setup_user_data.rendered)
+
+  depends_on = [aws_efs_file_system.jenkins_efs]
 }

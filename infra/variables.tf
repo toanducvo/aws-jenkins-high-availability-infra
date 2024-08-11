@@ -33,7 +33,7 @@ variable "jenkins_public_subnet_name" {
 variable "jenkins_public_subnet_cidrs" {
   type        = list(string)
   description = "CIDR block for the public subnets in each availability zone"
-  default = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
+  default     = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
 }
 
 
@@ -46,7 +46,7 @@ variable "jenkins_private_subnet_name" {
 variable "jenkins_private_subnet_cidrs" {
   type        = list(string)
   description = "CIDR block for the private subnets in each availability zone"
-  default = ["10.0.100.0/24","10.0.101.0/24","10.0.102.0/24" ]
+  default     = ["10.0.100.0/24", "10.0.101.0/24", "10.0.102.0/24"]
 }
 
 ### ELB Variables

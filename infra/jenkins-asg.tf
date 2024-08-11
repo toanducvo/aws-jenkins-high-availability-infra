@@ -30,6 +30,8 @@ resource "aws_autoscaling_group" "jenkins_asg" {
     propagate_at_launch = true
     value               = "Jenkins"
   }
+
+  depends_on = [aws_efs_file_system.jenkins_efs]
 }
 
 resource "aws_security_group" "jenkins_launch_template_security_group" {
